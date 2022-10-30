@@ -1,9 +1,23 @@
 const { StatusCodes } = require("http-status-codes")
+const User = require('../model/userModel') // model
+const bcrypt = require("bcryptjs")
 
 const authController = {
     register: async (req, res) => {
         try {
-            res.json({ msg: "register" })
+            const { name, email, mobile, password } = req.body
+
+            const encPassword = await bcrypt.hash(password, 10)
+
+            const newUser = await User.create({
+                name,
+                email,
+                mobile,
+                password: encPassword
+            })
+
+            res.status(StatusCodes.OK).json({ msg: "User registered Successfully", data: newUser })
+
         } catch (err) {
             return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ msg: err.message })
         }

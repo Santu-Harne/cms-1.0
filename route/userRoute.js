@@ -7,6 +7,6 @@ route.get(`/currentUser`, userController.getCurrentUser)
 route.patch(`/update/:id`, userController.updateUser)
 route.delete(`/delete/:id`, userController.deleteUser)
 
-route.patch(`/changeR ole/:id`, userController.changeRole)
+route.patch(`/changeRole/:id`, userController.changeRole)
 
 module.exports = route
