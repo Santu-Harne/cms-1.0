@@ -86,7 +86,27 @@ const authController = {
     },
     resetPassword: async (req, res) => {
         try {
-            res.json({ msg: "resetPassword" })
+            const id = req.user.id
+            const { oldPassword, newPassword } = req.body
+
+            // read user data
+            const extUser = await User.findById({ _id: id })
+            if (!extUser)
+                return res.status(StatusCodes.NOT_FOUND).json({ msg: "user doesn't exists" })
+
+            // compare password
+            const isMatch = await bcrypt.compare(oldPassword, extUser.password)
+            if (!isMatch)
+                return res.status(StatusCodes.BAD_REQUEST).json({ msg: "old password aren't match" })
+
+            // generate newPassword hash
+            const passwordHash = await bcrypt.hash(newPassword, 10)
+
+            // update logic
+            const output = await User.findByIdAndUpdate({ _id: id }, { password: passwordHash })
+
+            // output response
+            res.json({ msg: "User password success", output })
         } catch (err) {
             return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ msg: err.message })
         }
