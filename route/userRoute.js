@@ -1,12 +1,19 @@
 const route = require("express").Router()
 const userController = require('../controller/userController')
+const auth = require('../middleware/auth')
+const adminAuth = require('../middleware/adminAuth')
+const userAuth = require('../middleware/userAuth')
 
-route.get(`/allUsers`, userController.getAll)
-route.get(`/currentUser`, userController.getCurrentUser)
+// admin auth
+route.get(`/allUsers`, auth, adminAuth, userController.getAll)
+route.delete(`/delete/:id`, auth, adminAuth, userController.deleteUser)
+route.patch(`/changeRole/:id`, auth, adminAuth, userController.changeRole)
 
-route.patch(`/update/:id`, userController.updateUser)
-route.delete(`/delete/:id`, userController.deleteUser)
+//user auth
+route.get(`/currentUser`, auth, userController.getCurrentUser)
+route.patch(`/update`, auth, userAuth, userController.updateUser)
 
-route.patch(`/changeRole/:id`, userController.changeRole)
+
+
 
 module.exports = route
