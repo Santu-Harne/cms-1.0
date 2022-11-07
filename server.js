@@ -6,6 +6,8 @@ const cookieParser = require("cookie-parser")
 const assert = require("assert")
 const fileUpload = require('express-fileupload')
 const { StatusCodes } = require("http-status-codes")
+const path = require("path")
+
 
 const connectDB = require("./db/index")
 
@@ -43,6 +45,13 @@ app.use('/api/v1/mail', mailRoute)
 app.all('*', (req, res) => {
     res.status(StatusCodes.NOT_FOUND).json({ msg: "The Request route path not found" })
 })
+
+if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging') {
+    app.use(express.static('client/build'))
+    app.get('*', (req, res) => {
+        res.sendFile(path.join(_dirname + '/client/build/index.html'))
+    })
+}
 
 const start = async () => {
     try {
