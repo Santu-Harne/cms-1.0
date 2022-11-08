@@ -15,7 +15,7 @@ function Main(props) {
     return (
         <div>
             <Router>
-                <Menu />
+                <Menu props={''} />
                 <ToastContainer autoClose={4000} position={'top-right'} />
                 <Routes>
                     <Route path='/' element={<Home />} />
