@@ -23,7 +23,7 @@ app.use(express.json())
 
 // middleware
 app.use(cors())
-app.use(cookieParser(process.env.TOKEN_SECRET)) // add token only for signed cookies
+app.use(cookieParser(process.env.ACCESS_TOKEN_SECRET)) // add token only for signed cookies
 app.use(fileUpload({
     useTempFiles: true
 }))

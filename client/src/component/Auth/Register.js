@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { toast } from 'react-toastify'
-
+import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
 function Register(props) {
     const [user, setUser] = useState({
         name: '',
@@ -8,6 +9,8 @@ function Register(props) {
         mobile: '',
         password: ''
     })
+
+    const navigate = useNavigate()
 
     const readValue = (e) => {
         const { name, value } = e.target;
@@ -18,8 +21,14 @@ function Register(props) {
         e.preventDefault()
         try {
             console.log(`user = `, user)
+            await axios.post('/api/v1/auth/register', user)
+                .then(res => {
+                    console.log(`after register =`, res.data.data);
+                    toast.success(res.data.msg)
+                    navigate('/login')
+                }).catch(err => toast.error(err.message))
         } catch (err) {
-            toast.error(err.response.data.msg)
+            toast.error(err.message)
         }
     }
     return (
@@ -30,7 +39,7 @@ function Register(props) {
                 </div>
             </div>
             <div className="row">
-                <div className="col-md-6 offset-md-m">
+                <div className="col-md-6 offset-md-3">
                     <div className="card">
                         <div className="card-body">
                             <form onSubmit={submitHandler} autoComplete='on'>
@@ -51,7 +60,7 @@ function Register(props) {
                                     <input type="password" name="password" id="password" value={user.password} onChange={readValue} className='form-control' required />
                                 </div>
                                 <div className="form-group mt-2">
-                                    <input type="submit" value={'Submit'} className='btn btn-success' />
+                                    <input type="submit" value={'Submit'} className='btn btn-warning' />
                                 </div>
                             </form>
                         </div>

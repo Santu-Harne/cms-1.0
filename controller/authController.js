@@ -76,7 +76,7 @@ const authController = {
                 return res.status(StatusCodes.BAD_REQUEST).json({ msg: "Session Expired, Login again.." })
 
             // valid used id or not
-            jwt.verify(rf, process.env.TOKEN_SECRET, (err, user) => {
+            jwt.verify(rf, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
                 if (err)
                     return res.status(StatusCodes.BAD_REQUEST).json({ msg: "Invalid Access Token.. Login again" })
 
