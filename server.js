@@ -42,9 +42,9 @@ app.use('/api/v1/image', imageRoute)
 app.use('/api/v1/mail', mailRoute)
 
 // default route
-app.all('*', (req, res) => {
-    res.status(StatusCodes.NOT_FOUND).json({ msg: "The Request route path not found" })
-})
+// app.all('*', (req, res) => {
+//     res.status(StatusCodes.NOT_FOUND).json({ msg: "The Request route path not found" })
+// })
 
 if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging') {
     app.use(express.static('client/build'))
