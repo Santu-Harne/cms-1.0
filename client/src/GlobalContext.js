@@ -10,7 +10,6 @@ export const DataContext = createContext()
 // context provider
 function DataProvider(props) {
     const [token, setToken] = useState(false)
-    const [authApi, setAuthApi] = useState(false)
 
     const getToken = async () => {
         await axios.get('/api/v1/auth/refreshToken')
